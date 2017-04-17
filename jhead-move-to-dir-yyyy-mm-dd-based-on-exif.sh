@@ -41,7 +41,6 @@ function compute_burst_by_dir() {
     burst_output_filename=$1
     # ${a[@]} - all
     convert -resize ${ANIMATION_DIMENSION_MAX}x${ANIMATION_DIMENSION_MAX} -delay $ANIMATION_INTERVAL -loop 0 ${burst_array[@]} ${burst_output_filename}.gif
-	#echo "function compute_burst_by_dir( $1 ) not implemented yet!!" #| tee "./test/$1/compute_burst_by_dir.log"
 }
 
 ## HELPER FUNCTIONS END
@@ -71,7 +70,7 @@ for index in ${!array[@]}; do
         if [ $( echo $filename | grep -i BURST ) ]; then 
             burst_prefix=$( echo $filename | sed -r "s#(^.*)(_BURST)([0-9]*)(.*$)#\1\2#g" )
             burst_index=$( echo $filename | sed -r "s#(^.*)(_BURST)([0-9]*)(.*$)#\3#g" )
-            filedir_new="./test/$dateyyyymmdd/$burst_prefix"
+            filedir_new="./$dateyyyymmdd/$burst_prefix"
             filename_new="$filename_no_ext""-r."$extension 
             filepath_new=$filedir_new/$filename_new
             
@@ -99,13 +98,13 @@ for index in ${!array[@]}; do
             
             
         else
-		    filepath_new="./test/$dateyyyymmdd/$filename_no_ext""-r."$extension 
+		    filepath_new="./$dateyyyymmdd/$filename_no_ext""-r."$extension 
             mkdir "./$( dirname $filepath_new )" -p 2>/dev/null
 		    convert "$filename" -resize ${IMAGE_DIMENSION_MAX}x${IMAGE_DIMENSION_MAX} -quality $IMAGE_QUALITY_JPG_PERCENT $filepath_new
         fi
         
         
-        echo mv "$filename" $PROCESSED_FILES_DIR/
+        mv "$filename" $PROCESSED_FILES_DIR/
     else
         echo "$filename not jpeg, so no exif date to mkdir"
     fi
